@@ -9,16 +9,25 @@ class Customer(models.Model):
     email_address = models.CharField(max_length=50, blank=True, default="")
     account = models.FloatField(blank=True, null=True)
     # one-to-many Order
-    
-class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
-    # many-to-many Order
-    
+
 class Bill(models.Model):
     total_amount = models.FloatField()
     is_paid = models.BooleanField(default=False)
-    pass
+        
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    bill = models.OneToOneField(Bill, on_delete=models.CASCADE)
+
+class Producttype(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    type_name = models.CharField(max_length=50)
+  
+    
+
+
